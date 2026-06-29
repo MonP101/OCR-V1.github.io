@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0d0d0d">
+  <title>OCR V2</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/tesseract.js@5/dist/tesseract.min.js"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+
+  <div class="container">
+
+    <header>
+      <span class="badge">V2</span>
+      <h1>OCR Hồ Sơ</h1>
+      <p class="subtitle">CCCD · Ngày sinh · Họ tên · SĐT</p>
+    </header>
+
+    <label class="file-label" for="imageInput">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      <span id="fileLabel">Chọn ảnh hồ sơ…</span>
+    </label>
+    <input type="file" id="imageInput" accept="image/*" multiple>
+
+    <div class="hint">Ảnh lẻ = thông tin cá nhân &nbsp;·&nbsp; Ảnh chẵn = số điện thoại</div>
+
+    <button id="startBtn">Bắt đầu OCR</button>
+
+    <div id="progress" class="progress">Chưa xử lý</div>
+
+    <textarea
+      id="result"
+      placeholder="Kết quả xuất hiện ở đây…"
+      spellcheck="false">
+    </textarea>
+
+    <button id="copyBtn" class="copy-btn">Copy tất cả</button>
+
+    <button id="exportBtn" class="export-btn">Xuất Excel (.xlsx)</button>
+
+  </div>
+
+
+  <script src="ocr_v2.js"></script>
+
+  <script>
+    // File label update
+    document.getElementById("imageInput").addEventListener("change", function () {
+      const n = this.files.length;
+      document.getElementById("fileLabel").textContent =
+        n === 0 ? "Chọn ảnh hồ sơ…" : `${n} ảnh đã chọn (${Math.ceil(n/2)} khách)`;
+    });
+
+    // PWA Service Worker
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js")
+        .then(() => console.log("[PWA] Service worker registered"))
+        .catch(e => console.error("[PWA] SW error:", e));
+    }
+  </script>
+
+</body>
+</html>

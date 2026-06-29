@@ -1,0 +1,17 @@
+{
+  "name": "OCR Hồ Sơ V2",
+  "short_name": "OCR V2",
+  "description": "OCR CCCD, ngày sinh, họ tên, số điện thoại",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0d0d0d",
+  "theme_color": "#0d0d0d",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
