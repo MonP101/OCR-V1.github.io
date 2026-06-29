@@ -12,7 +12,7 @@ const CONFIG = {
     SHOW_PREVIEW: true,     // show crop previews in side panel
 
     THRESHOLD: {
-        NAME:  170,
+        NAME:  120,
         ID:    170,
         DOB:   160,
         PHONE: 140
@@ -47,7 +47,7 @@ const CONFIG = {
     },
 
     UPSCALE: {
-        NAME:  3,
+        NAME:  4,
         ID:    4,
         DOB:   4,
         PHONE: 3
@@ -242,11 +242,14 @@ function parseName(text) {
         .replace(/[^A-Za-z ]/g, " ")
         .toUpperCase()
         // --- Fix lỗi cụ thể sau uppercase ---
-        .replace(/\bPINH\b/g, "DINH")   // Đ bị đọc thành P
-        .replace(/\bDINl\b/g, "DINH")   // H cuối bị đọc thành l
-        .replace(/\bL\b/g, "LE")         // LE bị mất E
-        .replace(/\bD\b/g, "DO")         // Đô/Đỗ bị mất chữ sau
+        // Đ bị đọc thành P ở đầu từ (lỗi cố hữu Tesseract với font CCCD)
+        .replace(/\bP(?=[AĂÂEÊIOÔƠUƯY])/g, "D")  // PO→DO, PA→DA, PU→DU...
+        .replace(/\bPINH\b/g, "DINH")
+        .replace(/\bL\b/g, "LE")
         .replace(/\s+/g, " ")
+        .replace(/UG(?=[A-Z])/g, "UO")   // DUGNG→DUONG, CHUGNG→CHUONG
+        .replace(/OGN(?=[A-Z])/g, "ON")   // TRUOGNG → TRUONG (biến thể Ư→OG)
+        .replace(/\bUGN/g, "UON")          // UONG THI... → bắt đầu bằng UG
         .trim();
 
     return t || "";
